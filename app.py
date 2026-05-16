@@ -12,6 +12,7 @@ HTML = """
 <title>EduAssist AI</title>
 
 <style>
+
 body {
     font-family: Arial;
     background: #0b1220;
@@ -44,6 +45,12 @@ button {
     border: none;
     background: #38bdf8;
     cursor: pointer;
+    margin-top: 10px;
+}
+
+.clear-btn {
+    background: red;
+    color: white;
 }
 
 .chat {
@@ -63,6 +70,7 @@ button {
 .bot {
     color: #34d399;
 }
+
 </style>
 
 </head>
@@ -77,15 +85,27 @@ button {
 
 <form action="/chat">
     <input name="msg" placeholder="Ask anything..." required>
-    <button>Send</button>
+    <button type="submit">Send</button>
+</form>
+
+<form action="/clear">
+    <button type="submit" class="clear-btn">
+        Clear Chat
+    </button>
 </form>
 
 <div class="chat">
+
 {% for c in chat %}
+
 <p class="user"><b>You:</b> {{c['user']}}</p>
+
 <p class="bot"><b>Bot:</b> {{c['bot']}}</p>
+
 <hr>
+
 {% endfor %}
+
 </div>
 
 </div>
@@ -103,23 +123,28 @@ def smart_reply(msg):
 
     msg_lower = msg.lower()
 
-    # Manual smart answers
+    # Smart manual answers
+
     if "c++" in msg_lower:
-        return "C++ is a powerful programming language used for game development, software engineering and system programming."
+        return "C++ is a powerful programming language used for software, games and system programming."
 
     elif "software developer" in msg_lower or "developer" in msg_lower:
-        return "A software developer creates applications, websites and software using programming languages."
+        return "A software developer creates websites, applications and software using programming languages."
 
     elif "python" in msg_lower:
-        return "Python is a popular programming language used for AI, web development and automation."
+        return "Python is a popular programming language used for AI, automation and web development."
 
     elif "ai" in msg_lower:
-        return "Artificial Intelligence (AI) enables machines to simulate human intelligence."
+        return "Artificial Intelligence enables machines to think and learn like humans."
 
     elif "machine learning" in msg_lower:
         return "Machine Learning is a branch of AI where systems learn from data."
 
+    elif "hello" in msg_lower or "hi" in msg_lower:
+        return "Hello! I am EduAssist AI 🤖"
+
     # Wikipedia fallback
+
     try:
         return wikipedia.summary(msg, sentences=2)
 
@@ -141,6 +166,13 @@ def chat():
         "user": msg,
         "bot": reply
     })
+
+    return render_template_string(HTML, chat=chat_history)
+
+@app.route("/clear")
+def clear():
+
+    chat_history.clear()
 
     return render_template_string(HTML, chat=chat_history)
 
