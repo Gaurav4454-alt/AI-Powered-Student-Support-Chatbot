@@ -94,7 +94,7 @@ button {
 </div>
 
 <div class="footer">
-Made by Gaurav | Hackathon Project 🚀
+Made by CLGMATE TEAM | Hackathon Project 🚀
 </div>
 
 </body>
