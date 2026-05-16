@@ -55,15 +55,12 @@ button {
     overflow-y: auto;
 }
 
-.user { color: #60a5fa; }
-.bot { color: #34d399; }
+.user {
+    color: #60a5fa;
+}
 
-.footer {
-    position: fixed;
-    bottom: 10px;
-    width: 100%;
-    font-size: 12px;
-    color: gray;
+.bot {
+    color: #34d399;
 }
 </style>
 
@@ -73,7 +70,7 @@ button {
 
 <div class="container">
 
-<h1>🎓 EduAssist AI (Final Version)</h1>
+<h1>🎓 EduAssist AI</h1>
 
 <div class="box">
 
@@ -93,8 +90,9 @@ button {
 </div>
 </div>
 
-<div class="footer">
-Made by CLGMATE TEAM | Hackathon Project 🚀
+<!-- FOOTER -->
+<div style="position:fixed; bottom:10px; width:100%; text-align:center; font-size:12px; color:#9ca3af;">
+© 2026 CLGMATE TEAM | EduAssist AI Project 🚀
 </div>
 
 </body>
@@ -106,12 +104,16 @@ def get_answer(msg):
 
     if "exam" in msg:
         return "Focus on PYQs, revision and time management."
+
     elif "python" in msg:
         return "Python is used for AI, web apps and automation."
+
     elif "project" in msg:
         return "Build chatbot, portfolio or AI tools for hackathon."
-    elif "hello" in msg:
+
+    elif "hello" in msg or "hi" in msg:
         return "Hello! I am EduAssist AI 🤖"
+
     else:
         return "I can help with exams, coding and projects."
 
@@ -122,8 +124,15 @@ def home():
 @app.route("/chat")
 def chat():
     msg = request.args.get("msg")
+
     reply = get_answer(msg)
 
-    chat_history.append({"user": msg, "bot": reply})
+    chat_history.append({
+        "user": msg,
+        "bot": reply
+    })
 
-    return render_template_string(HTML, cha
+    return render_template_string(HTML, chat=chat_history)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=10000)
