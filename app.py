@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template_string
+import wikipedia
 
 app = Flask(__name__)
 
@@ -51,7 +52,7 @@ button {
     background: #111827;
     padding: 15px;
     border-radius: 10px;
-    height: 300px;
+    height: 350px;
     overflow-y: auto;
 }
 
@@ -75,7 +76,7 @@ button {
 <div class="box">
 
 <form action="/chat">
-    <input name="msg" placeholder="Ask your question..." required>
+    <input name="msg" placeholder="Ask anything..." required>
     <button>Send</button>
 </form>
 
@@ -90,7 +91,6 @@ button {
 </div>
 </div>
 
-<!-- FOOTER -->
 <div style="position:fixed; bottom:10px; width:100%; text-align:center; font-size:12px; color:#9ca3af;">
 © 2026 CLGMATE TEAM | EduAssist AI Project 🚀
 </div>
@@ -100,22 +100,11 @@ button {
 """
 
 def get_answer(msg):
-    msg = msg.lower()
-
-    if "exam" in msg:
-        return "Focus on PYQs, revision and time management."
-
-    elif "python" in msg:
-        return "Python is used for AI, web apps and automation."
-
-    elif "project" in msg:
-        return "Build chatbot, portfolio or AI tools for hackathon."
-
-    elif "hello" in msg or "hi" in msg:
-        return "Hello! I am EduAssist AI 🤖"
-
-    else:
-        return "I can help with exams, coding and projects."
+    try:
+        answer = wikipedia.summary(msg, sentences=2)
+        return answer
+    except:
+        return "Sorry, I could not find information about that."
 
 @app.route("/")
 def home():
