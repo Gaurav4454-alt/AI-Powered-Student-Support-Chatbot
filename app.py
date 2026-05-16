@@ -2,6 +2,8 @@ from flask import Flask, request, render_template_string
 
 app = Flask(__name__)
 
+chat_history = []
+
 HTML = """
 <!DOCTYPE html>
 <html>
@@ -11,7 +13,7 @@ HTML = """
 <style>
 body {
     font-family: Arial;
-    background: #0f172a;
+    background: #0b1220;
     color: white;
     text-align: center;
 }
@@ -19,7 +21,7 @@ body {
 .container {
     width: 60%;
     margin: auto;
-    margin-top: 50px;
+    margin-top: 40px;
 }
 
 .box {
@@ -36,11 +38,10 @@ input {
 }
 
 button {
-    padding: 12px 20px;
+    padding: 12px 18px;
     border-radius: 8px;
     border: none;
     background: #38bdf8;
-    color: black;
     cursor: pointer;
 }
 
@@ -50,7 +51,12 @@ button {
     background: #111827;
     padding: 15px;
     border-radius: 10px;
+    height: 300px;
+    overflow-y: auto;
 }
+
+.user { color: #60a5fa; }
+.bot { color: #34d399; }
 
 .footer {
     position: fixed;
@@ -67,25 +73,28 @@ button {
 
 <div class="container">
 
-<h1>🎓 EduAssist AI</h1>
+<h1>🎓 EduAssist AI (Final Version)</h1>
 
 <div class="box">
 
 <form action="/chat">
-    <input name="msg" placeholder="Ask your question...">
+    <input name="msg" placeholder="Ask your question..." required>
     <button>Send</button>
 </form>
 
 <div class="chat">
-<p><b>You:</b> {{user}}</p>
-<p><b>Bot:</b> {{reply}}</p>
+{% for c in chat %}
+<p class="user"><b>You:</b> {{c['user']}}</p>
+<p class="bot"><b>Bot:</b> {{c['bot']}}</p>
+<hr>
+{% endfor %}
 </div>
 
 </div>
 </div>
 
 <div class="footer">
-Made by Gaurav | AI Student Support Bot
+Made by Gaurav | Hackathon Project 🚀
 </div>
 
 </body>
@@ -96,11 +105,11 @@ def get_answer(msg):
     msg = msg.lower()
 
     if "exam" in msg:
-        return "Focus on PYQs, revision and short notes."
+        return "Focus on PYQs, revision and time management."
     elif "python" in msg:
-        return "Python is used for AI, web development and automation."
+        return "Python is used for AI, web apps and automation."
     elif "project" in msg:
-        return "Try AI chatbot, portfolio website or automation tool."
+        return "Build chatbot, portfolio or AI tools for hackathon."
     elif "hello" in msg:
         return "Hello! I am EduAssist AI 🤖"
     else:
@@ -108,13 +117,13 @@ def get_answer(msg):
 
 @app.route("/")
 def home():
-    return render_template_string(HTML, user="", reply="Ask me anything!")
+    return render_template_string(HTML, chat=chat_history)
 
 @app.route("/chat")
 def chat():
     msg = request.args.get("msg")
     reply = get_answer(msg)
-    return render_template_string(HTML, user=msg, reply=reply)
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000)
+    chat_history.append({"user": msg, "bot": reply})
+
+    return render_template_string(HTML, cha
