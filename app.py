@@ -16,7 +16,7 @@ def home():
 @app.route("/chat")
 def chat():
     return """
-    <h2>Chatbot Reply</h2>
+    <h2>Student Support Reply</h2>
 
     <p>Hello Student! Your query has been received successfully.</p>
 
