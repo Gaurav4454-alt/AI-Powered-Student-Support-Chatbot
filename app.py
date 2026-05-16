@@ -99,12 +99,32 @@ button {
 </html>
 """
 
-def get_answer(msg):
+def smart_reply(msg):
+
+    msg_lower = msg.lower()
+
+    # Manual smart answers
+    if "c++" in msg_lower:
+        return "C++ is a powerful programming language used for game development, software engineering and system programming."
+
+    elif "software developer" in msg_lower or "developer" in msg_lower:
+        return "A software developer creates applications, websites and software using programming languages."
+
+    elif "python" in msg_lower:
+        return "Python is a popular programming language used for AI, web development and automation."
+
+    elif "ai" in msg_lower:
+        return "Artificial Intelligence (AI) enables machines to simulate human intelligence."
+
+    elif "machine learning" in msg_lower:
+        return "Machine Learning is a branch of AI where systems learn from data."
+
+    # Wikipedia fallback
     try:
-        answer = wikipedia.summary(msg, sentences=2)
-        return answer
+        return wikipedia.summary(msg, sentences=2)
+
     except:
-        return "Sorry, I could not find information about that."
+        return "Sorry, I could not understand your question properly."
 
 @app.route("/")
 def home():
@@ -112,9 +132,10 @@ def home():
 
 @app.route("/chat")
 def chat():
+
     msg = request.args.get("msg")
 
-    reply = get_answer(msg)
+    reply = smart_reply(msg)
 
     chat_history.append({
         "user": msg,
