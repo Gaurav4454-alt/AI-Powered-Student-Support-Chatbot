@@ -123,9 +123,17 @@ def smart_reply(msg):
 
     msg_lower = msg.lower()
 
-    # Smart manual answers
+    # Creator Questions
+    if (
+        "who created you" in msg_lower
+        or "whose create you" in msg_lower
+        or "who developed you" in msg_lower
+        or "who develop you" in msg_lower
+    ):
+        return "I am an AI assistant developed by the Gaurav and Tambyass Team."
 
-    if "c++" in msg_lower:
+    # Smart manual answers
+    elif "c++" in msg_lower:
         return "C++ is a powerful programming language used for software, games and system programming."
 
     elif "software developer" in msg_lower or "developer" in msg_lower:
@@ -144,7 +152,6 @@ def smart_reply(msg):
         return "Hello! I am EduAssist AI 🤖"
 
     # Wikipedia fallback
-
     try:
         return wikipedia.summary(msg, sentences=2)
 
