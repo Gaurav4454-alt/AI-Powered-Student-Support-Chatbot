@@ -46,3 +46,14 @@ Clone the repository:
 
 ```bash
 git clone https://github.com/Gaurav4454-alt/AI-Powered-Student-Support-Chatbot.git
+## ▶️ Run Locally
+
+```bash
+git clone https://github.com/Gaurav4454-alt/AI-Powered-Student-Support-Chatbot.git
+cd AI-Powered-Student-Support-Chatbot
+pip install -r requirements.txt
+python app.py
+```
+
+Open browser:
+http://127.0.0.1:5000
